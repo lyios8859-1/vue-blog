@@ -25,13 +25,13 @@
 > npm install vue-cli -g
 
 # 技术栈
-> vue2 + vue-router3 + axios + Webpack3 + ElementUI2
+> vue + vue-router + axios + Webpack + ElementUI
 
 # 配置代理地址
 > 找到config目录下的index.js文件
 
 	proxyTable: {
-      '/article':{
+      '/api/*':{
           target:'http://localhost:3000',//被代理的接口
           changeOrigin: true,
           secure:true // 如果是https接口，需要配置这个参数
@@ -55,6 +55,6 @@
 	});
 
 	// 跨域可请求
-	app.get('/article', function(req, res, next){ 
+	app.get('/api/*', function(req, res, next){ 
 		res.json({msg: '数据请求成功了！'}); 
 	}); 

@@ -5,7 +5,7 @@
 				<el-row>
 					<el-col :span="18">
 						<div class="grid-content bg-purple">
-							<article class="article_content">
+							<article class="article_content" v-cloak>
 							{{article}}
 							</article>
 						</div>
@@ -37,14 +37,32 @@ export default {
 			article: ''
 		}
 	},
-	created() {
-		query_list.fetchDatas(this);
+	created() { //初始化data, el还没有
+	},
+	mounted(){ //初始化data, el，请求数据了
+		query: {
+			let result = query_list.fetchDatas(this);
+	        result.then(res => {
+	        	//let result = JSON.parse(res.data);//如果传递的时json格式的字符串就是转换一下
+	        	let result = res.data;
+				this.article = result.message;
+	        })
+	        .catch(err => {
+	            console.log(err);
+	        });
+		}
+		save: {
+			
+		}
 	}
 }
 
 
 </script>
 
+<style>
+	[v-cloak] { display: none } 
+</style>
 <style scoped>
   .article{
 		width: 100%;

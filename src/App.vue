@@ -15,14 +15,14 @@ export default {
         userName:'admin',
         password:'123456'
       };
-      self.$axios.get('/article'/*,{
+      self.$axios.get('/api/querylist'/*,{
         params: {
           ...postData,
         }
-      }*/).then(function (response) {
-        alert(JSON.stringify(response));
-      }).catch(function (error) {
-        console.log(error);
+      }*/).then(res => {
+        alert(JSON.parse(res));
+      }).catch(err => {
+        console.log(err);
       });
     }
   }
