@@ -6,11 +6,19 @@
 					<el-col :span="24">
 						<div class="grid-content bg-purple">
 							<article class="article_content" v-cloak>
-								<ul>
-									<li v-for="(obj, index) in article"  :key="index" v-cloak>
+								<ul class="ul">
+									<li class="ulli"	v-for="(obj, index) in article"  :key="index" v-cloak>
 										<div class="left_text">
 											<h2 class="title" v-text='obj["title"]' v-cloak></h2>
-											<div class="content" v-text='obj["content"]' v-cloak @mouseover="overShow" @mouseout="outHide"></div>
+											<div class="message">
+												<ul>
+													<li><span>发表于：</span><time>2018/03/12</time></li>
+													<li><span>分类于：</span><time>技术文章</time></li>
+													<li><span>标签：</span><time>nodejs</time></li>
+												</ul>
+											</div>
+											<div class="content" v-text='obj["trimcontent"]["html"]' v-cloak @mouseover="overShow" @mouseout="outHide"></div>
+											<div class="readfull"><a href="">阅读全文 >></a></div>
 										</div>
 										<div class="right_img" v-cloak>
 											<img src="../../../static/img/1.jpg" alt="" /><!--width="300px" height="200px"-->
@@ -37,6 +45,7 @@
 
 <script>
 import query_list from '@/query/query_list'
+import trimHtml from 'trim-html'
 export default {
 	name: 'Article',
 	data() {
@@ -53,15 +62,16 @@ export default {
 	        	//let result = JSON.parse(res.data);//如果传递的时json格式的字符串就是转换一下
 	        	let result = res.data;
 	        	result.forEach( obj =>{  
-				    this.article.push({title: obj['title'], content:obj['content']});  
+				    this.article.push({
+				    	title: obj['title'],
+				    	content:obj['content'],
+				    	trimcontent: trimHtml(obj['content'], {limit: 100}) 
+				    });
 				});
 	        })
 	        .catch(err => {
 	            console.log(err);
 	        });
-		}
-		save: {
-			
 		}
 	},
 	methods: {
@@ -99,7 +109,6 @@ export default {
 	    -webkit-transform: scale(0);
 	    transition: all .4s;
 	    -webkit-transition: all .4s;
-
 	}
 	.title:hover::after{
 	    height: 2px;
@@ -107,10 +116,6 @@ export default {
 	    transform: scale(1);
 	}
 /* 下划线向两端缩放 */
-
-
-
-
    .article{
 		width: 100%;
 		height: 100%;
@@ -125,6 +130,9 @@ export default {
 		height: 100%;
 		background: blue;
 	}
+	.article_content .ul{
+		padding: 10px;
+	}
 	.loadmore{
 		margin: 10px auto;
 		width: 100%;
@@ -133,23 +141,28 @@ export default {
 	.el-row{
 		margin: 0;
 	}
-	.article_content li{
+	.article_content .ulli{
 		position: relative;
 		width: 100%;
 		height: 200px;
 		margin-bottom: 10px;
 	    line-height: 25px;
 	    box-shadow: 1px 1px 1px 1px #ddd;
-	    
+	    transition: all .4s;
+	    -webkit-transition: all .4s;
 	}
-	.article_content li:hover{
+	.article_content .ulli:hover{
 		box-shadow: 0px 10px 16px 0px #666;
 	}
-	.article_content li:last-child{ 
+	.article_content .ulli:hover img{
+		transform: scale(1.4);
+		-webkit-transform: scale(1.4);
+	}
+	.article_content .ulli:last-child{ 
 		margin-bottom: 0px;
 		border-bottom: 0px;
 	}
-	.article_content li .title{
+	.article_content .ulli .title{
 		font-size: 20px;
 	    font-weight: bold;
 	    line-height: 38px;
@@ -162,20 +175,36 @@ export default {
 		width: calc(100% - 270px);
 		margin-left: 20px;
 	}
+	.left_text .readfull{
+	    position: absolute;
+	    bottom: 0;
+	    right: 10px;
+		letter-spacing: 2px;
+	    color: gainsboro;
+	}
 	.article_content .right_img{
 		position: absolute;
 		top: 0;
 		right: 0;
 		width: 250px;
 	    height: 160px;
+	    overflow: hidden;
 	    margin-top: 20px;
 	}
 	.right_img img{
 		display: inline-block;
 	  	height: auto;
 	  	max-width: 100%;
+	  	transition: all .4s;
+	    -webkit-transition: all .4s;
+	    -webkit-transform: scale(1);
+	  	transform: scale(1);
 	}
-	.article_content li .content{
-		height: 162px;
+	.article_content .ulli .content{
+		height: 130px;
+	}
+	.message li{
+		color: gainsboro;
+		margin: 0 20px 0 0;
 	}
 </style>
