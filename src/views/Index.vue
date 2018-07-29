@@ -48,6 +48,8 @@ export default {
     background-color: #D3DCE6;
     color: #333;
   }
-  
+  main{
+    margin: 10px auto;
+  }
 
 </style>

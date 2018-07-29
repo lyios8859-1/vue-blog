@@ -35,8 +35,7 @@
               <el-button slot="append" icon="el-icon-search"></el-button>
             </el-input>
             
-            <el-button type="text">登录</el-button> | 
-            <el-button type="text" disabled>注册</el-button>
+            <el-button type="text" disabled>注册</el-button><el-button type="text">登录</el-button>
           </div>
         </el-col>
       </el-row>
@@ -83,6 +82,7 @@ export default {
     color: #eee;
   }
   .el_row {
+    margin: 0px auto;
     background-color: rgb(84, 92, 100);
   }
   .el-col {
@@ -97,6 +97,6 @@ export default {
   }
   .el-input-group{
     width: 70%;
-    margin-right: 10px;
+    margin-right: 24px;
   }
 </style>
