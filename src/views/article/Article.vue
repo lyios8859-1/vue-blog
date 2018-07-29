@@ -101,8 +101,7 @@ export default {
 	            console.log(err);
 	        });
 		},
-		scroll(article) { // 滚动加载数据
-			let self = this;
+		scroll(article) { // 滚动加载数据   //还没有判断数据是否已经加载完，如果加载完，就不需要去请求服务器了
 			let isLoading = false;// 节流
 			window.onscroll = () => {
 				let oh = document.documentElement.offsetHeight;
@@ -111,7 +110,7 @@ export default {
 				let bottomOfWindow =  ((oh - scrollTop - wh) <= 200);
 				if (bottomOfWindow && isLoading == false) {
 					isLoading = true;
-					let pageNo = ++self.i;
+					let pageNo = ++this.i;
 					let result = query_list.fetchDatas(this, pageNo);
 					result.then(res => {
 			        	//let result = JSON.parse(res.data);//如果传递的时json格式的字符串就是转换一下
