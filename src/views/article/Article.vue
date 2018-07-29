@@ -6,8 +6,8 @@
 					<el-col :span="24">
 						<div class="grid-content bg-purple">
 							<article class="article_content" v-cloak>
-								<ul class="ul">
-									<li class="ulli"	v-for="(obj, index) in article"  :key="index" v-cloak>
+								<ul class="ul" id="ul">
+									<li class="ulli" id="ulli" v-for="(obj, index) in article"  :key="index" v-cloak>
 										<div class="left_text">
 											<h2 class="title" v-text='obj["title"]' v-cloak></h2>
 											<div class="message">
@@ -18,7 +18,7 @@
 												</ul>
 											</div>
 											<div class="content" v-text='obj["trimcontent"]["html"]' v-cloak @mouseover="overShow" @mouseout="outHide"></div>
-											<div class="readfull"><a href="">阅读全文 >></a></div>
+											<div class="readfull"><el-button type="text" class="readfull" @click='readFull(obj["content"], obj["title"])'>阅读全文 >></el-button></div>
 										</div>
 										<div class="right_img" v-cloak>
 											<img src="../../../static/img/1.jpg" alt="" /><!--width="300px" height="200px"-->
@@ -50,14 +50,42 @@ export default {
 	name: 'Article',
 	data() {
 		return {
-			article: []
+			article: [],
+			i: 1
 		}
 	},
 	created() { //初始化data, el还没有
+		
 	},
-	mounted(){ //初始化data, el，请求数据了
-		query: {
-			let result = query_list.fetchDatas(this);
+	beforeMount() {
+	    // 在页面挂载前就发起请求
+	    this.query()
+	 },
+	mounted() { //初始化data, el，请求数据了
+		lodingData: {
+			this.scroll(this.article)
+		}
+	},
+	methods: {
+		overShow(e) { // 鼠标悬浮时效果
+			//alert(e.target.tagName)
+		},
+		outHide(e) { // 鼠标离开时效果
+			//alert(e.target.tagName)
+		},
+		readFull(conten, title){
+			this.$alert(conten, title, {
+	          confirmButtonText: '确定',
+	          callback: action => {
+	            this.$message({
+	              type: 'info',
+	              message: `action: ${ action }`
+	            });
+	          }
+	        });
+		},
+		query(){
+			let result = query_list.fetchDatas(this, this.i);
 	        result.then(res => {
 	        	//let result = JSON.parse(res.data);//如果传递的时json格式的字符串就是转换一下
 	        	let result = res.data;
@@ -72,14 +100,38 @@ export default {
 	        .catch(err => {
 	            console.log(err);
 	        });
-		}
-	},
-	methods: {
-		overShow: function(e) { // 鼠标悬浮时效果
-			//alert(e.target.tagName)
 		},
-		outHide: function(e) { // 鼠标离开时效果
-			//alert(e.target.tagName)
+		scroll(article) { // 滚动加载数据
+			let self = this;
+			let isLoading = false;// 节流
+			window.onscroll = () => {
+				let oh = document.documentElement.offsetHeight;
+				let scrollTop = document.documentElement.scrollTop;
+				let wh = window.innerHeight;
+				let bottomOfWindow =  ((oh - scrollTop - wh) <= 200);
+				if (bottomOfWindow && isLoading == false) {
+					isLoading = true;
+					let pageNo = ++self.i;
+					let result = query_list.fetchDatas(this, pageNo);
+					result.then(res => {
+			        	//let result = JSON.parse(res.data);//如果传递的时json格式的字符串就是转换一下
+			        	
+			        	//if(res.data == 0 || res.data.length)
+			        	let result = res.data;
+			        	result.forEach( obj =>{  
+						    this.article.push({
+						    	title: obj['title'],
+						    	content:obj['content'],
+						    	trimcontent: trimHtml(obj['content'], {limit: 100}) 
+						    });
+						});
+						isLoading = false;
+			        })
+			        .catch(err => {
+			            console.log(err);
+			        });
+				}
+			}
 		}
 	}
 }
@@ -177,10 +229,8 @@ export default {
 	}
 	.left_text .readfull{
 	    position: absolute;
-	    bottom: 0;
+	    bottom: -5px;
 	    right: 10px;
-		letter-spacing: 2px;
-	    color: gainsboro;
 	}
 	.article_content .right_img{
 		position: absolute;

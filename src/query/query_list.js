@@ -1,7 +1,9 @@
 class FetchDatas {
-    fetchDatas(self) {
+    fetchDatas(self, pageNo) {
         // 获取数据
-        return self.$axios.get('/api/querylist?pageNo=1&pageSize=5');
+        console.log("pageNo="+pageNo);
+        
+        return self.$axios.get('/api/querylist?pageNo='+pageNo+'&pageSize=5');
     }
 }
 
