@@ -19,20 +19,20 @@
               <el-menu-item index="1">首页</el-menu-item>
               <el-menu-item index="2">文章</el-menu-item>
               <el-menu-item index="3" disabled>案例</el-menu-item>
-               <el-menu-item index="4">个人作品</el-menu-item>
+              <el-menu-item index="4">个人作品</el-menu-item>
               <el-menu-item index="5"><a href="javascript:void(0);" target="_blank">关于我</a></el-menu-item>
             </el-menu>
           </div>
         </el-col>
         <el-col :span="8">
           <div class="grid-content bg-purple">
-            <el-input placeholder="请输入内容" v-model="inputText">
+            <el-input placeholder="请输入内容" v-model="inputText" >
               <!-- <el-select v-model="select" slot="prepend" placeholder="请选择">
                 <el-option label="餐厅名" value="1"></el-option>
                 <el-option label="订单号" value="2"></el-option>
                 <el-option label="用户电话" value="3"></el-option>
               </el-select> -->
-              <el-button slot="append" icon="el-icon-search"></el-button>
+              <el-button slot="append" icon="el-icon-search" @click="search()"></el-button>
             </el-input>
             
             <el-button type="text" disabled>注册</el-button><el-button type="text">登录</el-button>
@@ -44,6 +44,7 @@
 
 <script>
 import BreadNav from '@/components/bread/BreadNav.vue'
+import query_list from '@/query/query_list'
 export default {
   name: 'Header',
   data () {
@@ -56,6 +57,14 @@ export default {
   methods: {
     handleSelect(key, keyPath) {
       console.log(key, keyPath);
+    },
+    search() {
+      let result = query_list.searchDatas(this);
+      result.then(res => {
+        console.log(res);
+      }).catch(err => {
+        console.log(err);
+      });
     }
   },
   components: {

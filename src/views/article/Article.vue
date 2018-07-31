@@ -25,13 +25,17 @@
 										</div>
 									</li>
 								</ul>
+								<div class="loading">
+									<p class="get-more" @click="getMore" v-show="switchShow">点击加载更多</p>
+									<p v-show="!switchShow">加载中...</p>
+								</div>
 							</article>
 						</div>
 					</el-col>
 				</el-row>
 			</el-col>
 
-			<el-col :span="6" style="background:blue;">
+			<el-col :span="6" style="background: blue;margin-top: 10px;">
 				<el-row>
 					<el-col :span="24">
 						<div>ksdlaflksd</div><div>ksdlaflksd</div><div>ksdlaflksd</div><div>ksdlaflksd</div><div>ksdlaflksd</div><div>ksdlaflksd</div><div>ksdlaflksd</div><div>ksdlaflksd</div><div>ksdlaflksd</div><div>ksdlaflksd</div><div>ksdlaflksd</div><div>ksdlaflksd</div><div>ksdlaflksd</div>
@@ -50,8 +54,9 @@ export default {
 	name: 'Article',
 	data() {
 		return {
-			article: [],
-			i: 1
+			article: [], // 内容
+			nowPage: 1, // 页数
+			switchShow:false,
 		}
 	},
 	created() { //初始化data, el还没有
@@ -59,11 +64,11 @@ export default {
 	},
 	beforeMount() {
 	    // 在页面挂载前就发起请求
-	    this.query()
+	    this.query();
 	 },
 	mounted() { //初始化data, el，请求数据了
 		lodingData: {
-			this.scroll(this.article)
+			this.scroll()
 		}
 	},
 	methods: {
@@ -85,7 +90,7 @@ export default {
 	        });
 		},
 		query(){
-			let result = query_list.fetchDatas(this, this.i);
+			let result = query_list.fetchDatas(this, this.nowPage);
 	        result.then(res => {
 	        	//let result = JSON.parse(res.data);//如果传递的时json格式的字符串就是转换一下
 	        	let result = res.data;
@@ -101,7 +106,12 @@ export default {
 	            console.log(err);
 	        });
 		},
-		scroll(article) { // 滚动加载数据   //还没有判断数据是否已经加载完，如果加载完，就不需要去请求服务器了
+		getMore(){ // 没有对点击做判断，之后修改当没有数据了不允许点击，给出提示没有更多数据了
+			this.switchShow=!this.switchShow;
+			//++this.nowPage;
+			this.scroll();
+		},
+		scroll() { // 滚动加载数据   //还没有判断数据是否已经加载完，如果加载完，就不需要去请求服务器了
 			let isLoading = false;// 节流
 			window.onscroll = () => {
 				let oh = document.documentElement.offsetHeight;
@@ -110,21 +120,27 @@ export default {
 				let bottomOfWindow =  ((oh - scrollTop - wh) <= 200);
 				if (bottomOfWindow && isLoading == false) {
 					isLoading = true;
-					let pageNo = ++this.i;
+					let pageNo = ++this.nowPage;
+					console.log("pageNo===" + pageNo);
 					let result = query_list.fetchDatas(this, pageNo);
 					result.then(res => {
 			        	//let result = JSON.parse(res.data);//如果传递的时json格式的字符串就是转换一下
 			        	
-			        	//if(res.data == 0 || res.data.length)
-			        	let result = res.data;
-			        	result.forEach( obj =>{  
-						    this.article.push({
-						    	title: obj['title'],
-						    	content:obj['content'],
-						    	trimcontent: trimHtml(obj['content'], {limit: 100}) 
-						    });
-						});
-						isLoading = false;
+				        let message = res.data;
+				        console.log(message)
+			        	if(message.length) {
+				        	message.forEach(obj => {  
+							    this.article.push({
+							    	title: obj['title'],
+							    	content: obj['content'],
+							    	trimcontent: trimHtml(obj['content'], {limit: 100}) 
+							    });
+							});
+							isLoading = false;
+							this.switchShow = !this.switchShow;
+						} else {
+							alert("没有更多数据！！！");
+						}
 			        })
 			        .catch(err => {
 			            console.log(err);
@@ -255,5 +271,14 @@ export default {
 	.message li{
 		color: gainsboro;
 		margin: 0 20px 0 0;
+	}
+	.loading{
+		width: 100%;
+	    height: 40px;
+	    background: gainsboro;
+	    text-align: center;
+	    line-height: 40px;
+	    font-size: 16px;
+	    letter-spacing: 2px;
 	}
 </style>
