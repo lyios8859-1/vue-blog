@@ -16,7 +16,7 @@
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import Article from '@/views/article/Article'
-//import Convert from '@/components/asideleft/Convert'
+
 export default {
   name: 'Index',
   data() {

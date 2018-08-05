@@ -1,12 +1,18 @@
 class FetchDatas {
+    /**
+     * 分页获取数据
+     * @param {object} self vue对象
+     * @param {number} pageNo 当前页
+     */
     fetchDatas(self, pageNo) {
-        // 获取数据
-        //console.log("pageNo="+pageNo);
-        
         return self.$axios.get(`/api/querylist?pageNo=${pageNo}&pageSize=5`);
     }
+    /**
+     * 搜索数据
+     * @param {object} self  vue对象
+     * @param {string} content 需要搜索的内容
+     */
     searchDatas(self, content) {
-        // 获取数据
        return self.$axios.get('/api/searchlist');
     }
 }

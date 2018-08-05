@@ -38,7 +38,7 @@
 			<el-col :span="6" style="background: blue;margin-top: 10px;">
 				<el-row>
 					<el-col :span="24">
-						<div>ksdlaflksd</div><div>ksdlaflksd</div><div>ksdlaflksd</div><div>ksdlaflksd</div><div>ksdlaflksd</div><div>ksdlaflksd</div><div>ksdlaflksd</div><div>ksdlaflksd</div><div>ksdlaflksd</div><div>ksdlaflksd</div><div>ksdlaflksd</div><div>ksdlaflksd</div><div>ksdlaflksd</div>
+						<Clock/><div>ksdlaflksd</div><div>ksdlaflksd</div><div>ksdlaflksd</div><div>ksdlaflksd</div><div>ksdlaflksd</div><div>ksdlaflksd</div><div>ksdlaflksd</div><div>ksdlaflksd</div><div>ksdlaflksd</div><div>ksdlaflksd</div><div>ksdlaflksd</div><div>ksdlaflksd</div>
 						<div>ksdlaflksd</div><div>ksdlaflksd</div><div>ksdlaflksd</div><div>ksdlaflksd</div><div>ksdlaflksd</div><div>ksdlaflksd</div><div>ksdlaflksd</div><div>ksdlaflksd</div><div>ksdlaflksd</div><div>ksdlaflksd</div><div>ksdlaflksd</div><div>ksdlaflksd</div><div>ksdlaflksd</div>
 					</el-col>
 				</el-row>
@@ -50,6 +50,7 @@
 <script>
 import query_list from '@/query/query_list'
 import trimHtml from 'trim-html'
+import Clock from '@/components/timeclock/clock.vue'
 export default {
 	name: 'Article',
 	data() {
@@ -148,6 +149,9 @@ export default {
 				}
 			}
 		}
+	},
+	components: {
+	    Clock
 	}
 }
 
