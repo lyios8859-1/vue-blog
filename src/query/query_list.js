@@ -13,7 +13,11 @@ class FetchDatas {
      * @param {string} content 需要搜索的内容
      */
     searchDatas(self, content) {
-       return self.$axios.get('/api/searchlist');
+        return self.$axios.get('/api/searchlist', {
+                params: {
+                    content: content
+                }
+            });
     }
 }
 

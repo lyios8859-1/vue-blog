@@ -26,7 +26,7 @@
         </el-col>
         <el-col :span="8">
           <div class="grid-content bg-purple">
-            <el-input placeholder="请输入内容" v-model="inputText" >
+            <el-input placeholder="请输入内容" v-model="inputText">
               <!-- <el-select v-model="select" slot="prepend" placeholder="请选择">
                 <el-option label="餐厅名" value="1"></el-option>
                 <el-option label="订单号" value="2"></el-option>
@@ -44,14 +44,16 @@
 
 <script>
 import BreadNav from '@/components/bread/BreadNav.vue'
-import query_list from '@/query/query_list'
+import query_list from '@/query/query_list.js'
+import util from '@/utils/util.js'
 export default {
   name: 'Header',
   data () {
     return {
       logoImg: 'login图标',
       activeIndex: '1',
-      inputText:''
+      inputText:'',
+      serachArticle: [] // 搜索出来的文章
     }
   },
   methods: {
@@ -59,9 +61,13 @@ export default {
       console.log(key, keyPath);
     },
     search() {
-      let result = query_list.searchDatas(this);
+      let result = query_list.searchDatas(this, this.inputText);
+      console.log(result);
       result.then(res => {
-        console.log(res);
+
+        
+        //console.log('查询总条数：' + res.data.count);
+        //console.log(res.data.rows);
       }).catch(err => {
         console.log(err);
       });
@@ -85,6 +91,7 @@ export default {
     /* background: red; */
     width: 100%;
     height: 100%;
+    margin: 0;
     font-size: 1.4rem;
     font-weight: bold;
     line-height: 60px;

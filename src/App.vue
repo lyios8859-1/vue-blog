@@ -14,6 +14,7 @@ export default {
 </script>
 
 <style>
+[v-cloak] { display: none } 
 ul {
   list-style-type: none;
 }
