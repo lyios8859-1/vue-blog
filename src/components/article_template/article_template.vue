@@ -1,29 +1,34 @@
 <template>
-    <article class="article_content" slot="article">
-        <ul class="ul" id="ul">
-            <li class="ulli" id="ulli" v-for="(obj, index) in article"  :key="index" v-cloak>
-                <div class="left_text">
-                    <h2 class="title" id="titlehightlight" v-text='obj["title"]' v-cloak></h2>
-                    <div class="message">
-                        <ul>
-                            <li><span>发表于：</span><time>2018/03/12</time></li>
-                            <li><span>分类于：</span><time>技术文章</time></li>
-                            <li><span>标签：</span><time>nodejs</time></li>
-                        </ul>
-                    </div>
-                    <div class="content" v-text='obj["trimcontent"]["html"]' v-cloak @mouseover="overShow" @mouseout="outHide"></div>
-                    <div class="readfull"><el-button type="text" class="readfull" @click='readFull(obj["content"], obj["title"])'>阅读全文 >></el-button></div>
-                </div>
-                <div class="right_img" v-cloak>
-                    <img src="../../../static/img/1.jpg" alt="" /><!--width="300px" height="200px"-->
-                </div>
-            </li>
-        </ul>
-        <div class="loading">
-            <p class="get-more" @click="getMore" v-show="switchShow">点击加载更多</p>
-            <p v-show="!switchShow">加载中...</p>
-        </div>
-    </article>
+<div>
+	<slot name="article">
+	<article class="article_content">
+		<ul class="ul" id="ul">
+			<li class="ulli" id="ulli" v-for="(obj, index) in article"  :key="index" v-cloak>
+				<div class="left_text">
+					<h2 class="title" id="titlehightlight" v-text='obj["title"]' v-cloak></h2>
+					<div class="message">
+						<ul>
+							<li><span>发表于：</span><time>2018/03/12</time></li>
+							<li><span>分类于：</span><time>技术文章</time></li>
+							<li><span>标签：</span><time>nodejs</time></li>
+						</ul>
+					</div>
+					<div class="content" v-text='obj["trimcontent"]["html"]' v-cloak @mouseover="overShow" @mouseout="outHide"></div>
+					<div class="readfull"><el-button type="text" class="readfull" @click='readFull(obj["content"], obj["title"])'>阅读全文 >></el-button></div>
+				</div>
+				<div class="right_img" v-cloak>
+					<img src="../../../static/img/1.jpg" alt="" /><!--width="300px" height="200px"-->
+				</div>
+			</li>
+		</ul>
+		<div class="loading">
+			<p class="get-more" @click="getMore" v-show="switchShow">点击加载更多</p>
+			<p v-show="!switchShow">加载中...</p>
+		</div>
+	</article>
+	</slot>
+	<!-- <slot name="serach">父组件与子组件没有有对应的solt则显示子组件的信息</slot> -->
+</div>	
 </template>
 
 <script>

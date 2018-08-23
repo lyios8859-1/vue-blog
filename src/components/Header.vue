@@ -34,7 +34,6 @@
               </el-select> -->
               <el-button slot="append" icon="el-icon-search" @click="search()"></el-button>
             </el-input>
-            
             <el-button type="text" disabled>注册</el-button><el-button type="text">登录</el-button>
           </div>
         </el-col>
@@ -62,15 +61,19 @@ export default {
     },
     search() {
       let result = query_list.searchDatas(this, this.inputText);
-      console.log(result);
       result.then(res => {
-
-        
+        if(res.data.count <= 0) {
+          alert('该内容不存在,请重新输入查询的内容...');
+          return;
+        }
         //console.log('查询总条数：' + res.data.count);
         //console.log(res.data.rows);
+        //this.serachArticle = res.data.rows;
+        this.$emit('searchChild', res.data.rows);
       }).catch(err => {
         console.log(err);
       });
+      
     }
   },
   components: {

@@ -1,10 +1,10 @@
 <template>
     <div class="index">
       <header>
-        <Header></Header>
+        <Header @searchChild="searchParent"></Header>
       </header>
       <main>
-        <Article></Article>
+        <Article :serachData="serachData"></Article>
       </main>
       <footer>
         <Footer></Footer>
@@ -21,7 +21,14 @@ export default {
   name: 'Index',
   data() {
     return {
-      title: '首页'
+      title: '首页',
+      serachData: []
+    }
+  },
+  methods: {
+    searchParent(data) { // data是子组件传递过来的数据
+      this.serachData = data;
+      console.log(data);
     }
   },
   components: {
