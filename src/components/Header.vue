@@ -16,11 +16,11 @@
               background-color="#545c64"
               text-color="#fff"
               active-text-color="#ffd04b">
-              <el-menu-item index="1">首页</el-menu-item>
+              <el-menu-item index="1"><a href="/">首页</a></el-menu-item>
               <el-menu-item index="2">文章</el-menu-item>
               <el-menu-item index="3" disabled>案例</el-menu-item>
               <el-menu-item index="4">个人作品</el-menu-item>
-              <el-menu-item index="5"><a href="javascript:void(0);" target="_blank">关于我</a></el-menu-item>
+              <el-menu-item index="5"><a href="https://github.com/lyios8859-1" target="_blank">关于我</a></el-menu-item>
             </el-menu>
           </div>
         </el-col>
@@ -62,6 +62,10 @@ export default {
     search() {
       let result = query_list.searchDatas(this, this.inputText);
       result.then(res => {
+        if(!this.inputText) {
+          alert('请输入你要查询的类容...');
+          return;
+        }
         if(res.data.count <= 0) {
           alert('该内容不存在,请重新输入查询的内容...');
           return;
